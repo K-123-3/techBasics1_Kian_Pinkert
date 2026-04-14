@@ -1,22 +1,10 @@
 # techBasics1_Kian_Pinkert
 
-## Grading Tech basics 1
+## Grading
 
-### weekly assignments
-* 8 assignments
-  * 4% each
-#### 32%
-
- ### Participation
- #### 8%
-
-### written exam
-* 1 hour
-* on paper
-* multiple choice, code correction...
-#### 15%
-
-### Project
-* single or in pairs
-* coded in python
-#### 35% 
+| Percentage       | To-do         | notes |
+| ------------- |:-------------:| -----:|
+| 4 x 8% -> 32% | Weekly assignments||
+| 8%     | Participation   | |
+|15% | Written exam  |  on paper, code correction & multiple choice |
+| 35% |Project | can be in pairs or single, coded in Python|
