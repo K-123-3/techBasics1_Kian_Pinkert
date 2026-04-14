@@ -2,7 +2,7 @@
 
 ## Grading
 
-| Percentage       | To-do         | notes |
+| Percentage       | To-do         | Notes |
 | ------------- |:-------------:| -----:|
 | 4 x 8% -> 32% | Weekly assignments||
 | 8%     | Participation   | |
