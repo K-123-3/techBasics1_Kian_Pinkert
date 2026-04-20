@@ -11,9 +11,10 @@
 ---------------------------------------
 
 ## Weekly assignements:
----------------------------------------
+
 
 ### Week 1: ASCII ART
 * Challenges: sometimes the ASCII art would shift once executed with print
 * Fix: putting a space after a \ symbol
 * I did not use any AI or generators
+---------------------------------------
