@@ -10,6 +10,7 @@
 | 35% |Project | can be in pairs or single, coded in Python|
 ---------------------------------------
 
+
 ## Weekly assignements:
 
 
