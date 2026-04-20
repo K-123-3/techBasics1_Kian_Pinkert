@@ -8,6 +8,7 @@
 | 8%     | Participation   | |
 |15% | Written exam  |  on paper, code correction & multiple choice |
 | 35% |Project | can be in pairs or single, coded in Python|
+---------------------------------------
 
 ## Weekly assignements:
 ---------------------------------------
