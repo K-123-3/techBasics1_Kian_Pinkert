@@ -10,6 +10,8 @@
 | 35% |Project | can be in pairs or single, coded in Python|
 ---------------------------------------
  
+![alt text](https://preview.redd.it/coding-cat-is-raising-your-productivity-3-v0-dtkrm36qtnb81.png?width=1080&crop=smart&auto=webp&s=dbb15af5169539b2bdfd2433a43a7c43cd884bbd)
+
  
 ## Weekly assignements:
 
@@ -19,3 +21,4 @@
 * Fix: putting a space after a \ symbol
 * I did not use any AI or generators
 ---------------------------------------
+
