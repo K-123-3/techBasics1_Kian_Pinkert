@@ -1,4 +1,4 @@
-print("""
+print(r"""
 
 
                  /\◠◠◠◠◠/\      ⁂𝓌𝑜𝑜𝒻⁂    _/\___/\_
@@ -10,7 +10,7 @@ print("""
 """)
 #my first attempt, using no generators or similar
 
-print("""
+print(r"""
   \ /   / \   \ /
    |   |___|   |   
    |   |   |   |
