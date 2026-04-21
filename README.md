@@ -6,7 +6,7 @@
 | ------------- |:-------------:| -----:|
 | 4 x 8% -> 32% | Weekly assignments||
 | 8%     | Participation   | |
-|15% | Written exam  |  on paper, code correction & multiple choice |
+|15% | Written exam  |  16th of June: on paper, code correction & multiple choice |
 | 35% |Project | can be in pairs or single, coded in Python|
 ---------------------------------------
  
