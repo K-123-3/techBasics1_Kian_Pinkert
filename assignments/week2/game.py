@@ -47,13 +47,13 @@ time.sleep(3) #to have enough time for user to read
 Shelves_done = set()
 Shelves = {'1' , '2' , '3' , '4'}
 while len(Shelves_done) < 4:
-    shelf = input("What do you look at? 1, 2, 3 or 4?").strip().upper()  #to account for different spelling
+    shelf = input("What do you look at? 1, 2, 3 or 4?")
     if shelf in Shelves:
         if shelf in Shelves_done:
             print("You already saw that...")
             time.sleep(1)#not allowing endless loop with same shelf
         else:
-            print(f"You examine shelf {shelf.upper()}")
+            print(f"You examine shelf {shelf}")
             if shelf == '1':
                 delay("""
                 A- Arwork
