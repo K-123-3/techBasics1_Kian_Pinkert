@@ -128,3 +128,4 @@ while True:
 delay("""As you turn around to take a last look inside, the shop is gone.
 Thanks for playing!""")
 
+#i have also updated the README to include info about making this code
