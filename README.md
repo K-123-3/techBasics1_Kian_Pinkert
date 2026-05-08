@@ -22,3 +22,10 @@
 * I did not use any AI or generators
 ---------------------------------------
 
+### Week 2: Game
+* Challenges: Wrong output after for example putting in 'Yes'
+* solution: put .upper() after input to account for spelling
+* I looked into different forums (i.e stackoverflow) where people discuss common issues, like the spelling,
+  when i needed help as most issues have been talked about there 
+---------------------------------------
+### Week 3:
