@@ -15,7 +15,7 @@ The code serves as a helper for the main code, which uses the classes and functi
 
 ## Function analysis: pick one function and analyze it in detail:
 
- function from the Helper.py
+### function from the Helper.py
 
 
 def isCollided(Bullet, Stormtrooper):
@@ -32,6 +32,7 @@ def isCollided(Bullet, Stormtrooper):
     else:
         return False
 
+  ### and from Main.py to also analyse its use:
   
     for b in bullets:
         for st in stormtroops:
