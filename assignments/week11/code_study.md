@@ -20,15 +20,15 @@ The code serves as a helper for the main code, which uses the classes and functi
 
 def isCollided(Bullet, Stormtrooper):
    
-    bx = Bullet.pos_x + Bullet.img.get_width()  / 2
-    by = Bullet.pos_y + Bullet.img.get_height() / 2
+    bx = Bullet.pos_x + Bullet.img.get_width()  / 2   #This gets the center of the image as its x position, which will be at its left corner, is added to half of its width
+    by = Bullet.pos_y + Bullet.img.get_height() / 2   # same just woth the y position
     tx = Stormtrooper.pos_x + Stormtrooper.img.get_width()  / 2
     ty = Stormtrooper.pos_y + Stormtrooper.img.get_height() / 2
 
-    distance = math.sqrt(math.pow(bx - tx, 2) + math.pow(by - ty, 2))
+    distance = math.sqrt(math.pow(bx - tx, 2) + math.pow(by - ty, 2))  #calculate distance using Pythagorean theorem
 
     if distance < 60:
-        return True
+        return True  #if less than 60 is between bullet and stormtrooper center, it detects as a collision
     else:
         return False
 
@@ -37,9 +37,9 @@ def isCollided(Bullet, Stormtrooper):
     for b in bullets:
         for st in stormtroops:
             if isCollided(b, st):
-                bullets.remove(b)
-                stormtroops.remove(st)
-                score += 1
+                bullets.remove(b) #bullet and stormtrooper dissapear
+                stormtroops.remove(st)  
+                score += 1   #you get a point
                 break
 
 The isCollided function always requires two arguments, Bullet and Stormtrooper. In the Main code these are shortened to b and st.
