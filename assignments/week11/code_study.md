@@ -55,7 +55,7 @@ In the Main code, if the collision is true, the bullet and the stormtrooper are 
 I will likely also structure my code with a helper and a main to keep things cleaner and more organized. The calculation of the distance between two objects to measure when a collision happens also was not something i knew how to do so that will be very helpful. 
 
 ## What parts of the code were confusing or difficult at the beginning to understand?
-## - Were you able to understand what it is doing after your own research?
+##   - Were you able to understand what it is doing after your own research?
 
 I had to reread the Game over and Start screen function a few times to fully understand what was happening in for example this part:
 prompt = font.render("SPACE : RESTART | Q: QUIT", True, (255, 255, 255))
@@ -66,3 +66,14 @@ The most difficult for me was the
 distance = math.sqrt(math.pow(bx - tx, 2) + math.pow(by - ty, 2))
 
 because i didnt at first connect it to the Pythagoream theory but with some research i saw the connection and found it much simpler to grasp.
+
+
+## Extra Notes
+
+In the game over screen i found the 
+frozen = screen.copy()
+
+ screen.blit(frozen, (0, 0))
+
+ code very interesting because having the screen freeze behind the game over screen is something i wanted to implement aswell and didnt know how to.
+ 
