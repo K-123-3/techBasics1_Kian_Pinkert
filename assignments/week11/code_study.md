@@ -42,4 +42,27 @@ def isCollided(Bullet, Stormtrooper):
                 score += 1
                 break
 
+The isCollided function always requires two arguments, Bullet and Stormtrooper. In the Main code these are shortened to b and st.
+In the isCollided function it is checked wether the collision is true or not. To find this out, the coordinates of the bullet (bx and by) 
+are retrieved and the image width or height is halved to have the coordinate of the center of the image.
+Same is done for the Stormtrooper (tx and ty).
+The distance of the two is calculated using the Pythagorean theorem to get the hypotenuse between bullet center and stormtrooper center, which is the distance-
+If the distance is less than 60, the collision is true, otherwise it is false.
+In the Main code, if the collision is true, the bullet and the stormtrooper are removed and the users score increases by 1.
 
+## Takeaways: are there anything you can learn from the code? (How to structure your code, a clean solution for some function you might also need...)
+
+I will likely also structure my code with a helper and a main to keep things cleaner and more organized. The calculation of the distance between two objects to measure when a collision happens also was not something i knew how to do so that will be very helpful. 
+
+## What parts of the code were confusing or difficult at the beginning to understand?
+## - Were you able to understand what it is doing after your own research?
+
+I had to reread the Game over and Start screen function a few times to fully understand what was happening in for example this part:
+prompt = font.render("SPACE : RESTART | Q: QUIT", True, (255, 255, 255))
+    prompt_rect = prompt.get_rect(midtop=(sw / 2, rect.bottom + 16))
+
+The most difficult for me was the
+
+distance = math.sqrt(math.pow(bx - tx, 2) + math.pow(by - ty, 2))
+
+because i didnt at first connect it to the Pythagoream theory but with some research i saw the connection and found it much simpler to grasp.
