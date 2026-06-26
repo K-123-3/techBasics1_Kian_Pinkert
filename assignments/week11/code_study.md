@@ -17,6 +17,7 @@ The code serves as a helper for the main code, which uses the classes and functi
 
  function from the Helper.py
 
+
 def isCollided(Bullet, Stormtrooper):
     #finding the center coordinates
     bx = Bullet.pos_x + Bullet.img.get_width()  / 2
@@ -31,8 +32,7 @@ def isCollided(Bullet, Stormtrooper):
     else:
         return False
 
-    and from the Main.py code to also analyse the use of the function:
-
+  
     for b in bullets:
         for st in stormtroops:
             if isCollided(b, st):
