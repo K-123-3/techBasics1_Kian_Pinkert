@@ -19,7 +19,7 @@ The code serves as a helper for the main code, which uses the classes and functi
 
 
 def isCollided(Bullet, Stormtrooper):
-    #finding the center coordinates
+   
     bx = Bullet.pos_x + Bullet.img.get_width()  / 2
     by = Bullet.pos_y + Bullet.img.get_height() / 2
     tx = Stormtrooper.pos_x + Stormtrooper.img.get_width()  / 2
