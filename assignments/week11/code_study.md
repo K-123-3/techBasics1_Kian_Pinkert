@@ -71,9 +71,9 @@ because i didnt at first connect it to the Pythagoream theory but with some rese
 ## Extra Notes
 
 In the game over screen i found the 
-frozen = screen.copy()
 
- screen.blit(frozen, (0, 0))
+frozen = screen.copy()
+screen.blit(frozen, (0, 0))
 
  code very interesting because having the screen freeze behind the game over screen is something i wanted to implement aswell and didnt know how to.
  
