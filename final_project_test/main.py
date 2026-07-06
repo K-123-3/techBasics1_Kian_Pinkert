@@ -1,15 +1,16 @@
 from player import *
+# from requirements.txt  import *
 
 pygame.display.init()
+pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 pygame.display.set_caption('Racoon game')
 
-bike = Bikes(pos_x=100, pos_y=100)
+bike = Bikes(pos_x=800, pos_y=-random.randint(0, 200))
 racoon = Racoon(100, 100)
 bg = pygame.image.load("pictures/img.png").convert_alpha()
-
 
 flag = True
 while flag:
@@ -24,10 +25,9 @@ while flag:
     racoon.animate(direction_x=dx, direction_y=dy)
     racoon.update()
 
-    bx = 1
-    by = 1
-    bike.animate(direction_x=bx, direction_y=by)
+    bike.animate(direction_x=-5, direction_y=0)
     bike.update()
+    check_collision(racoon, bike)
 
     screen.blit(bg, (0, 0))
     racoon.draw(screen)

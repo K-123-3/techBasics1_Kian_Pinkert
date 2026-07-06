@@ -1,4 +1,6 @@
 import pygame
+import random
+import math
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1000, 500
 
@@ -14,12 +16,14 @@ class Bikes:
         self.is_moving = True
         self.pos_x = pos_x
         self.pos_y = pos_y
+        self.rect = self.bikes_frames[0].get_rect(center=(self.pos_x, self.pos_y)).inflate(-350, -350)
 
-    def animate(self, direction_x=0, direction_y=0):
+    def animate(self, direction_x=-1, direction_y=0):
         self.is_moving = bool(direction_x or direction_y)
 
-        self.pos_x += direction_x * 3
-        self.pos_y += direction_y * 3
+        self.pos_x += direction_x
+        self.pos_y += direction_y
+        self.rect.center = (self.pos_x + 200, self.pos_y + 200)
 
     def load_frame(self, path):
         img = pygame.image.load(path).convert_alpha()
@@ -40,6 +44,8 @@ class Bikes:
         screen.blit(self.bikes_frames[self.frame_index], (self.pos_x, self.pos_y))
 
 
+
+#racooon/player class
 class Racoon:
     def __init__(self, pos_x=0, pos_y=100):  # default value for start position
         self.idle_frame = self.load_frame("pictures/racoon/0.png")
@@ -56,7 +62,10 @@ class Racoon:
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.rac = self.idle_frame
-        self.rect = self.rac.get_rect(center=(self.pos_x, self.pos_y))
+        self.rect = self.rac.get_rect(center=(self.pos_x, self.pos_y)).inflate(-150, -150)
+
+        self.hit_timer = 0
+        self.hit_duration = 1
 
     def load_frame(self, path):
         img = pygame.image.load(path).convert_alpha()
@@ -68,8 +77,8 @@ class Racoon:
         self.pos_x += direction_x * 3 #walking speed
         self.pos_y += direction_y * 3
 
-        self.pos_x = max(0, min(SCREEN_WIDTH - 200, self.pos_x))
-        self.pos_y = max(0, min(SCREEN_HEIGHT - 300, self.pos_y))
+        self.pos_x = max(0, min(SCREEN_WIDTH, self.pos_x))
+        self.pos_y = max(0, min(SCREEN_HEIGHT, self.pos_y))
 
         self.rect.center = (self.pos_x, self.pos_y)
 
@@ -91,6 +100,29 @@ class Racoon:
             self.frame_index = 0
             self.animation_timer = 0
 
+        if self.hit_timer > 0:
+             self.hit_timer -= 1
+
+    def hit(self):
+        self.hit_timer = self.hit_duration
+
     def draw(self, screen):
         image = pygame.transform.flip(self.rac, self.facing_left, False)
         screen.blit(image, self.rect)
+
+        if self.hit_timer > 0:
+            image = image.copy()
+            red_tint = pygame.Surface(image.get_size(), pygame.SRCALPHA)
+            red_tint.fill((255, 0, 0, 255))
+            image.blit(red_tint, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+            screen.blit(image, self.rect)
+
+
+
+
+def check_collision(racoon, bike):
+
+    if racoon.rect.colliderect(bike.rect):
+        racoon.hit()
+        return True
+    return False
