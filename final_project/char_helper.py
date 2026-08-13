@@ -197,36 +197,59 @@ def check_collision(racoon, bike):
 #-----bins----
 class Bins:
     def __init__(self, pos_x=0, pos_y=100):
-        self.bin_frames = [
-            self.load_frame(f"pictures/bin/bn{i}.png") for i in (0, 1, 2, 3)
+        self.default_frame = self.load_frame("pictures/bin/bin.png")
+        self.anim_frames = [
+            self.load_frame(f"pictures/bin/bn{i}.png") for i in range(4)
         ]
 
-        self.frame_index = 0
-        self.animation_speed = 8
-        self.animation_timer = 0
         self.pos_x = pos_x
         self.pos_y = pos_y
-        self.rect = self.bin_frames[0].get_rect(center=(self.pos_x, self.pos_y)).inflate(-350, -350)
+
+        self.frame_index = 0
+        self.animation_speed = 6
+        self.animation_timer = 0
+        self.anim_duration = 80
+        self.anim_time_left = 0
+        self.is_animating = False
+        self.collected = False        #1 use
 
     def load_frame(self, path):
         img = pygame.image.load(path).convert_alpha()
-        return pygame.transform.scale(img, (300, 300))
+        return pygame.transform.scale(img, (130, 130))
+
+    def interaction(self, target_x, target_y, tolerance=70):
+        return abs(self.pos_x - target_x) < tolerance and abs(self.pos_y - target_y) < tolerance
+
+    def animate(self):
+        if self.collected or self.is_animating:
+            return False
+        self.collected = True
+        self.is_animating = True
+        self.frame_index = 0
+        self.animation_timer = 0
+        self.anim_time_left = self.anim_duration
+        return True
+
+    def check_interaction(self, racoon):
+        if not self.collected and self.interaction(racoon.pos_x, racoon.pos_y):
+            return self.animate()
+        return False
 
     def update(self):
-        self.animation_timer += 1  # ticks through animation
-        if self.animation_timer >= self.animation_speed:  # check if enough time has passed to progress animation
-            self.animation_timer = 0  # reset timer
-            self.frame_index = (self.frame_index + 1) % len(
-                self.bin_frames)  # next animation + loop back to 1 if at 3
+        if not self.is_animating:
+            return
 
-    def draw(self, screen):
-        screen.blit(self.bin_frames[self.frame_index], (self.pos_x, self.pos_y))
+        self.animation_timer += 1
+        if self.animation_timer >= self.animation_speed:
+            self.animation_timer = 0
+            self.frame_index = min(self.frame_index + 1, len(self.anim_frames) - 1)
 
-    def check_interaction(racoon, bin, screen):
-        if racoon.rect.colliderect(bin.rect):
-            bin.update()
-            bin.draw(screen)
-            return True
-        else:
-            screen.blit('pictures/bin/bin.png', (bin.pos_x, bin.pos_y))
-        return False
+        self.anim_time_left -= 1
+        if self.anim_time_left <= 0:
+            self.is_animating = False  # default frame
+
+    def draw(self, screen, pos=None):
+        image = self.anim_frames[self.frame_index] if self.is_animating else self.default_frame
+        draw_pos = pos if pos is not None else (self.pos_x, self.pos_y)
+        rect = image.get_rect(center=draw_pos)
+        screen.blit(image, rect)

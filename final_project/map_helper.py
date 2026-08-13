@@ -105,7 +105,10 @@ class CityCamera:
         self.center_camera(racoon)
         screen.blit(self.map_surface, (-self.offset.x, -self.offset.y))
 
-    def player_screen_pos(self, racoon):
-        screen_x = racoon.pos_x * self.zoom - self.offset.x
-        screen_y = racoon.pos_y * self.zoom - self.offset.y
+    def to_screen_pos(self, x, y):
+        screen_x = x * self.zoom - self.offset.x
+        screen_y = y * self.zoom - self.offset.y
         return screen_x, screen_y
+
+    def player_screen_pos(self, racoon):
+        return self.to_screen_pos(racoon.pos_x, racoon.pos_y)

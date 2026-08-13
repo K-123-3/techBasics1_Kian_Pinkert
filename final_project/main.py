@@ -30,21 +30,27 @@ def draw_score(screen, score, max_lives=3):
         icon = face_alive if i < score else face_dead # show dead face when score goes down
         screen.blit(icon, (x, y))
 
-
 def new_game():
     racoon = Racoon(200, 125)
-    trash = Bins(pos_x=100, pos_y=250)
     bike = Bikes(pos_x=800, pos_y=random.randint(-300, 100))
     bike2 = Bikes(pos_x=800, pos_y=random.randint(-300, 100))
     bike3 = Bikes(pos_x=800, pos_y=random.randint(-300,  100))
     city_bg = CityCamera("map/city.tmx", SCREEN_WIDTH, SCREEN_HEIGHT)
     road_bg = ScrollingBackground("map/road.tmx", SCREEN_WIDTH, SCREEN_HEIGHT, speed=1)
-    return racoon, trash, bike, bike2, bike3, city_bg, road_bg
+
+    bin_positions = [
+        (200, 300),
+        (400,200),
+        (400,400),
+    ]
+    bins = [Bins(pos_x=x, pos_y=y) for x, y in bin_positions]
+
+    return racoon, bike, bike2, bike3, city_bg, road_bg, bins
 
 
-racoon, trash, bike, bike2, bike3, city_bg, road_bg = new_game()
-score = 3
-scene = "road"  #change to road if you want to check road only
+racoon, bike, bike2, bike3, city_bg, road_bg, bins = new_game()
+score = 0
+scene = "city"  #change to road if you want to check road only
 start_screen(screen)
 flag = True
 while flag:
@@ -62,10 +68,15 @@ while flag:
         racoon.update()
         city_bg.draw_camera(screen, racoon)
 
+        for bin in bins:
+            bin.update()
+            if bin.check_interaction(racoon):
+                score = min(score + 1, 3)
+            bin.draw(screen, city_bg.to_screen_pos(bin.pos_x, bin.pos_y))
+
         screen_x, screen_y = city_bg.player_screen_pos(racoon)
-        racoon.rect.center = (screen_x, screen_y)  # temporary: for drawing only
+        racoon.rect.center = (screen_x, screen_y)
         racoon.draw(screen)
-        trash.draw(screen)
 
         draw_score(screen, score)
         pygame.display.flip()
@@ -99,7 +110,7 @@ while flag:
         score -= 1
 
     if score <= 0:
-        racoon, trash, bike, bike2, bike3, city_bg, road_bg = new_game()
+        racoon, bike, bike2, bike3, city_bg, road_bg, bins = new_game()
         score = 3
         scene = "city"
         game_over_screen(screen)
