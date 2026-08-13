@@ -1,0 +1,105 @@
+{
+    "activeFile": "/Users/kmarlo/mappp.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Alle Dateien (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "/Users/kmarlo/Desktop/city.tmx": {
+            "scale": 0.34,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 1354.4117647058822,
+                "y": 822.0588235294115
+            }
+        },
+        "/Users/kmarlo/Desktop/city.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.21
+        },
+        "/Users/kmarlo/Downloads/city.tmx": {
+            "scale": 0.2261,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 521.8929677134013,
+                "y": 247.6780185758514
+            }
+        },
+        "/Users/kmarlo/bgroad1.tsx": {
+            "scaleInDock": 1
+        },
+        "/Users/kmarlo/city.tmx": {
+            "scale": 0.43,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 756.9767441860466,
+                "y": 416.27906976744185
+            }
+        },
+        "/Users/kmarlo/mappp.tmx": {
+            "scale": 0.079,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 9525.316455696202,
+                "y": 2550.632911392405
+            }
+        },
+        "/Users/kmarlo/pixil-frame-0 13.tsx": {
+            "scaleInDock": 1
+        },
+        "/tileset.tsx": {
+            "scaleInDock": 1
+        },
+        "city.tmx": {
+            "scale": 0.5254,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 367.33917015607165,
+                "y": 236.01065854586977
+            }
+        },
+        "pixil-frame-0 18.tsx": {
+            "scaleInDock": 1
+        },
+        "pixil-frame-0 19.tsx": {
+            "scaleInDock": 1
+        },
+        "pixil-frame-0 20.tsx": {
+            "scaleInDock": 1
+        },
+        "road.tmx": {
+            "scale": 0.058950892857142854,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 5606.361226808028,
+                "y": 797.2737599394168
+            }
+        }
+    },
+    "last.externalTilesetPath": "/Users/kmarlo/Desktop",
+    "last.imagePath": "/Users/kmarlo/Downloads",
+    "map.height": 40,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "map.width": 60,
+    "openFiles": [
+        "/Users/kmarlo/mappp.tmx"
+    ],
+    "project": "city.tiled-project",
+    "recentFiles": [
+        "/Users/kmarlo/Downloads/city.tmx",
+        "city.tmx",
+        "/Users/kmarlo/Desktop/city.tsx",
+        "/Users/kmarlo/Desktop/city.tmx",
+        "/Users/kmarlo/mappp.tmx",
+        "/Users/kmarlo/city.tmx",
+        "road.tmx"
+    ],
+    "tileset.embedInMap": false,
+    "tileset.lastUsedFilter": "Tiled-Kachelsatzdateien (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx"
+}
