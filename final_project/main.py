@@ -32,9 +32,6 @@ def draw_score(screen, score, max_lives=3):
 
 def new_game():
     racoon = Racoon(200, 125)
-    bike = Bikes(pos_x=800, pos_y=random.randint(-300, 100))
-    bike2 = Bikes(pos_x=800, pos_y=random.randint(-300, 100))
-    bike3 = Bikes(pos_x=800, pos_y=random.randint(-300,  100))
     city_bg = CityCamera("map/city.tmx", SCREEN_WIDTH, SCREEN_HEIGHT)
     road_bg = ScrollingBackground("map/road.tmx", SCREEN_WIDTH, SCREEN_HEIGHT, speed=1)
 
@@ -45,12 +42,25 @@ def new_game():
     ]
     bins = [Bins(pos_x=x, pos_y=y) for x, y in bin_positions]
 
-    return racoon, bike, bike2, bike3, city_bg, road_bg, bins
+
+    bike_positions = [
+        (800, random.randint(-300, 100)),
+        (900, random.randint(-100, 50)),
+        (600, random.randint(-400, -200)),
+    ]
+    bikes = [Bikes(pos_x=x, pos_y=y) for x, y in bike_positions]
 
 
-racoon, bike, bike2, bike3, city_bg, road_bg, bins = new_game()
-score = 0
-scene = "city"  #change to road if you want to check road only
+    return racoon, bikes, city_bg, road_bg, bins
+racoon, bikes, city_bg, road_bg, bins = new_game()
+
+'''score = 0
+scene = "city"'''
+
+#to check road:
+score = 3
+scene = "road"
+
 start_screen(screen)
 flag = True
 while flag:
@@ -83,44 +93,41 @@ while flag:
 
         if racoon.pos_x >= city_bg.world_width:
             scene = "road"
-            racoon.pos_x, racoon.pos_y = 100, 250
-            racoon.rect.center = (racoon.pos_x, racoon.pos_y)
+            road_bg.update()
+            racoon.wall_collision(dx, dy, road_bg.collision_rects)
+            racoon.update()
+            racoon.sync_screen_position(road_bg.scroll_x)
         continue
 
     road_bg.update()
-    racoon.animate(direction_x=dx, direction_y=dy)
+    racoon.wall_collision(dx, dy, road_bg.collision_rects)
     racoon.update()
     racoon.sync_screen_position(road_bg.scroll_x)
 
     if racoon.is_off_screen(SCREEN_WIDTH, SCREEN_HEIGHT):
-        score -= 1
+        racoon.pos_x, racoon.pos_y = 100, 250
 
-    bike.animate(direction_x=-5, direction_y=0)
-    bike.update()
-    bike2.animate(direction_x=-5, direction_y=0)
-    bike2.update()
-    bike3.animate(direction_x=-5, direction_y=0)
-    bike3.update()
+    for bike in bikes:
+        bike.animate(direction_x=random.randint(-13, -3), direction_y=0)
+        bike.update()
 
-    if check_collision(racoon, bike):
-        score -= 1
-    if check_collision(racoon, bike2):
-        score -= 1
-    if check_collision(racoon, bike3):
-        score -= 1
+        if check_collision(racoon, bike):
+            score -= 1
 
     if score <= 0:
-        racoon, bike, bike2, bike3, city_bg, road_bg, bins = new_game()
+        racoon, bikes, city_bg, road_bg, bins = new_game()
         score = 3
         scene = "city"
         game_over_screen(screen)
         continue
 
+    if road_bg.finished and scene == "road":
+        scene = "city"
+
     road_bg.draw(screen)
     racoon.draw(screen)
-    bike.draw(screen)
-    bike2.draw(screen)
-    bike3.draw(screen)
+    for bike in bikes:
+        bike.draw(screen)
     draw_score(screen, score)
     pygame.display.flip()
 

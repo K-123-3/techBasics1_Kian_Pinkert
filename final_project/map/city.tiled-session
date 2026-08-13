@@ -54,11 +54,11 @@
             "scaleInDock": 1
         },
         "city.tmx": {
-            "scale": 0.5254,
-            "selectedLayer": 1,
+            "scale": 0.5224,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 367.33917015607165,
-                "y": 236.01065854586977
+                "x": 539.8162327718223,
+                "y": 526.416539050536
             }
         },
         "pixil-frame-0 18.tsx": {

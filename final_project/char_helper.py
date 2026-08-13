@@ -20,7 +20,7 @@ class Racoon:
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.rac = self.idle_frame
-        self.rect = self.rac.get_rect(center=(self.pos_x, self.pos_y))
+        self.rect = self.rac.get_rect(center=(self.pos_x, self.pos_y)) #rect setup for collisions
         self.mask = pygame.mask.from_surface(self.walk_frames[0])
 
         self.hit_timer = 0
@@ -32,15 +32,15 @@ class Racoon:
 
     def animate(self, direction_x=0, direction_y=0):
         self.is_moving = bool(direction_x or direction_y)
-        self.pos_x += direction_x * 3
-        self.pos_y += direction_y * 3
+        self.pos_x += direction_x * 4
+        self.pos_y += direction_y * 4
 
         if direction_x > 0:
             self.facing_left = False
         elif direction_x < 0:
             self.facing_left = True
 
-    def wall_collision(self, direction_x, direction_y, collision_rects):
+    def wall_collision(self, direction_x, direction_y, collision_rects): #for city scene
         self.is_moving = bool(direction_x or direction_y)
         if direction_x > 0:
             self.facing_left = False
@@ -84,18 +84,18 @@ class Racoon:
     def hit(self):
         self.hit_timer = self.hit_duration
 
-    def draw(self, screen):
+    def draw(self, screen): #draw racoon
         image = pygame.transform.flip(self.rac, self.facing_left, False)
         screen.blit(image, self.rect)
 
-        if self.hit_timer > 0:
+        if self.hit_timer > 0: #red if hit
             image = image.copy()
             red_tint = pygame.Surface(image.get_size(), pygame.SRCALPHA)
             red_tint.fill((255, 0, 0, 255))
             image.blit(red_tint, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
             screen.blit(image, self.rect)
 
-    def is_off_screen(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT):
+    def is_off_screen(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT): #off screen check
         return (
                 self.rect.centerx < 0 or self.rect.centerx > width
                 or self.rect.centery < 0 or self.rect.centery > height
@@ -133,8 +133,8 @@ class Bikes:
         self.pos_y += direction_y
 
         frame = self.bikes_frames[self.frame_index]
-        self.rect.topleft = (self.pos_x, self.pos_y)  # match draw()'s blit position
-        if self.pos_x < -200:
+        self.rect.topleft = (self.pos_x, self.pos_y)  # match draw() blit position
+        if self.pos_x < -200: # of screen means reset pos
             self.pos_x = SCREEN_WIDTH + random.randint(0, 400)
             self.pos_y = random.randint(100, 400)
             self.variant = random.choice(self.BIKES)
@@ -167,7 +167,7 @@ class Bikes:
         wheel_height = max(10, int(frame.get_height() * 0.2))
         self.mask_offset = (0, frame.get_height() - wheel_height) # offset for wheel
 
-        wheel_area = frame.subsurface((
+        wheel_area = frame.subsurface(( # crop wheel area
             self.mask_offset[0],
             self.mask_offset[1],
             frame.get_width(),
@@ -210,14 +210,19 @@ class Bins:
         self.animation_timer = 0
         self.anim_duration = 80
         self.anim_time_left = 0
-        self.is_animating = False
+        self.is_animating = False #for default frame
         self.collected = False        #1 use
 
     def load_frame(self, path):
         img = pygame.image.load(path).convert_alpha()
-        return pygame.transform.scale(img, (130, 130))
+        return pygame.transform.scale(img, (250, 250))
 
-    def interaction(self, target_x, target_y, tolerance=70):
+    def check_interaction(self, racoon):
+        if not self.collected and self.interaction(racoon.pos_x, racoon.pos_y):
+            return self.animate()
+        return False
+
+    def interaction(self, target_x, target_y, tolerance=30): #when racoon is touching bin, interation
         return abs(self.pos_x - target_x) < tolerance and abs(self.pos_y - target_y) < tolerance
 
     def animate(self):
@@ -229,11 +234,6 @@ class Bins:
         self.animation_timer = 0
         self.anim_time_left = self.anim_duration
         return True
-
-    def check_interaction(self, racoon):
-        if not self.collected and self.interaction(racoon.pos_x, racoon.pos_y):
-            return self.animate()
-        return False
 
     def update(self):
         if not self.is_animating:
