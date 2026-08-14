@@ -4,29 +4,37 @@ from pytmx.util_pygame import load_pygame
 from screens import *
 import math
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-import time
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 1000, 500
-racoon = Racoon(100, 100)
+def render_tmx_layers(tmx_data): #render map
+    width = tmx_data.width * tmx_data.tilewidth
+    height = tmx_data.height * tmx_data.tileheight
+    surface = pygame.Surface((width, height), pygame.SRCALPHA)
+
+    for layer in tmx_data.visible_layers:
+        if isinstance(layer, pytmx.TiledTileLayer):
+            for x, y, gid in layer:
+                tile = tmx_data.get_tile_image_by_gid(gid)
+                if tile:
+                    surface.blit(tile, (x * tmx_data.tilewidth, y * tmx_data.tileheight))
+
+    return surface
 
 
-# ----------bike background----------
+def get_collision_rects(tmx_data): #get walls from object layer
+    return [
+        pygame.Rect(obj.x, obj.y, obj.width, obj.height)
+        for layer in tmx_data.objectgroups
+        for obj in layer
+    ]
+
+
+# ----------scrolling background (roads)----------
 class ScrollingBackground:
 
     def __init__(self, tmx_path, width=SCREEN_WIDTH, height=SCREEN_HEIGHT, speed=1):
         tmx_data = load_pygame(tmx_path)
-
-        map_pixel_width = tmx_data.width * tmx_data.tilewidth
-        map_pixel_height = tmx_data.height * tmx_data.tileheight
-        map_surface = pygame.Surface((map_pixel_width, map_pixel_height), pygame.SRCALPHA)
-
-        for layer in tmx_data.visible_layers:
-            if isinstance(layer, pytmx.TiledTileLayer):
-                for x, y, gid in layer:
-                    tile = tmx_data.get_tile_image_by_gid(gid)
-                    if tile:
-                        map_surface.blit(tile, (x * tmx_data.tilewidth, y * tmx_data.tileheight))
+        map_surface = render_tmx_layers(tmx_data)
+        map_pixel_width, map_pixel_height = map_surface.get_size()
 
         scale = height / map_pixel_height
         scaled_width = max(1, int(map_pixel_width * scale))
@@ -41,11 +49,7 @@ class ScrollingBackground:
         self.max_scroll = max(0, self.tile_width - self.screen_width)
         self.finished = self.max_scroll == 0
 
-        self.collision_rects = []
-        for layer in tmx_data.objectgroups:
-            for obj in layer:
-                self.collision_rects.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-
+        self.collision_rects = get_collision_rects(tmx_data)
 
     def update(self, speed=None):
         if speed is not None:
@@ -53,7 +57,6 @@ class ScrollingBackground:
         # never past max_scroll
         self.scroll_x = min(self.scroll_x + self.speed, self.max_scroll)
         self.finished = self.scroll_x >= self.max_scroll
-
 
     def draw(self, screen):
         screen.blit(self.surface, (-self.scroll_x, 0))
@@ -66,32 +69,19 @@ def load_map_background(tmx_path, width=SCREEN_WIDTH, height=SCREEN_HEIGHT):
 
 
 # ---------city
-class CityCamera: #for city: different "camera", player focused
+class CityCamera:  # for city: different "camera", player focused
+
     def __init__(self, tmx_path, width=SCREEN_WIDTH, height=SCREEN_HEIGHT, zoom=1.8):
         tmx_data = load_pygame(tmx_path)
-        map_pixel_width = tmx_data.width * tmx_data.tilewidth
-        map_pixel_height = tmx_data.height * tmx_data.tileheight
-        self.map_surface = pygame.Surface((map_pixel_width, map_pixel_height), pygame.SRCALPHA)
-
-        for layer in tmx_data.visible_layers:
-            if isinstance(layer, pytmx.TiledTileLayer):
-                for x, y, gid in layer:
-                    tile = tmx_data.get_tile_image_by_gid(gid)
-                    if tile:
-                        self.map_surface.blit(tile, (x * tmx_data.tilewidth, y * tmx_data.tileheight))
-
-        self.world_width = map_pixel_width
-        self.world_height = map_pixel_height
+        self.map_surface = render_tmx_layers(tmx_data)
+        self.world_width, self.world_height = self.map_surface.get_size()
         self.zoom = zoom  # convert coordinates with zoom using this
 
-        scaled_w = int(map_pixel_width * zoom)
-        scaled_h = int(map_pixel_height * zoom)
+        scaled_w = int(self.world_width * zoom)
+        scaled_h = int(self.world_height * zoom)
         self.map_surface = pygame.transform.scale(self.map_surface, (scaled_w, scaled_h))
 
-        self.collision_rects = []
-        for layer in tmx_data.objectgroups:
-            for obj in layer:
-                self.collision_rects.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+        self.collision_rects = get_collision_rects(tmx_data)
 
         self.width = width
         self.height = height
@@ -99,7 +89,7 @@ class CityCamera: #for city: different "camera", player focused
         self.half_w = width // 2
         self.half_h = height // 2
 
-    def center_camera(self, target):  #target is racoon
+    def center_camera(self, target):  # target is racoon
         self.offset.x = target.pos_x * self.zoom - self.half_w
         self.offset.y = target.pos_y * self.zoom - self.half_h
         self.offset.x = max(0, min(self.offset.x, self.map_surface.get_width() - self.width))
@@ -109,10 +99,8 @@ class CityCamera: #for city: different "camera", player focused
         self.center_camera(racoon)
         screen.blit(self.map_surface, (-self.offset.x, -self.offset.y))
 
-    def to_screen_pos(self, x, y): # convert world pos to screen pos
-        screen_x = x * self.zoom - self.offset.x
-        screen_y = y * self.zoom - self.offset.y
-        return screen_x, screen_y
+    def to_screen_pos(self, x, y):  # convert world pos to screen pos
+        return x * self.zoom - self.offset.x, y * self.zoom - self.offset.y
 
     def player_screen_pos(self, racoon):
         return self.to_screen_pos(racoon.pos_x, racoon.pos_y)
