@@ -1,14 +1,14 @@
 import pygame
 import random
-import math
+import time
 SCREEN_WIDTH, SCREEN_HEIGHT = 1000, 500
 
 #----------racooon/player class--------------
 class Racoon:
     def __init__(self, pos_x=0, pos_y=100):  # default value for start position
-        self.idle_frame = self.load_frame("pictures/racoon/0.png")
+        self.idle_frame = self.load_frame("media/pictures/racoon/0.png")
         self.walk_frames = [
-            self.load_frame(f"pictures/racoon/{i}.png") for i in (1, 2, 3) #for all frames apply load and scale function
+            self.load_frame(f"media/pictures/racoon/{i}.png") for i in (1, 2, 3) #for all frames apply load and scale function
         ]
 
         self.frame_index = 0
@@ -40,24 +40,24 @@ class Racoon:
         elif direction_x < 0:
             self.facing_left = True
 
-    def wall_collision(self, direction_x, direction_y, collision_rects): #for city scene
+    def wall_collision(self, direction_x, direction_y, collision_rects, speed=3):
         self.is_moving = bool(direction_x or direction_y)
         if direction_x > 0:
             self.facing_left = False
         elif direction_x < 0:
             self.facing_left = True
 
-        hitbox = self.rect.inflate(-300, -300) #inflate because of transparent pxls
+        hitbox = self.rect.inflate(-300, -300)  # inflate because of transparent pxls
 
-        self.pos_x += direction_x * 3 #check if racoon hits wall
+        self.pos_x += direction_x * speed  # check if racoon hits wall
         hitbox.center = (self.pos_x, self.pos_y)
         if any(hitbox.colliderect(wall) for wall in collision_rects):
-            self.pos_x -= direction_x * 3
+            self.pos_x -= direction_x * speed
 
-        self.pos_y += direction_y * 3
+        self.pos_y += direction_y * speed
         hitbox.center = (self.pos_x, self.pos_y)
         if any(hitbox.colliderect(wall) for wall in collision_rects):
-            self.pos_y -= direction_y * 3
+            self.pos_y -= direction_y * speed
 
     def sync_screen_position(self, scroll_x=0):
    #so racoon stays still
@@ -95,6 +95,7 @@ class Racoon:
             image.blit(red_tint, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
             screen.blit(image, self.rect)
 
+
     def is_off_screen(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT): #off screen check
         return (
                 self.rect.centerx < 0 or self.rect.centerx > width
@@ -103,14 +104,20 @@ class Racoon:
 
 #----------bikes--------------
 class Bikes:
-    BIKES = ("a", "b", "c") #account for the 3 types
+    BIKES_CAR = ("a", "b", "c", "d") #account for the 3 types, d is the car
+    BIKES_ONLY = ("a", "b", "c")
+    CAR_PERCENTAGE = 0.2 #how likely is a car to spawn
     frame_cache = {}
     spawn_margin = 150
 
-    def __init__(self, pos_x=0, pos_y=200, variant=None):
-        self.variant = variant if variant else random.choice(self.BIKES) #variant for testing purposes
+    def __init__(self, pos_x=0, pos_y=200, variant=None, allow_car=False):
+        if variant:
+            self.variant = variant
+        elif allow_car and random.random() < self.CAR_PERCENTAGE:
+            self.variant = "d"
+        else:
+            self.variant = random.choice(self.BIKES_ONLY)
         self.bikes_frames = self.get_frames(self.variant)
-
         self.frame_index = 0
         self.animation_speed = 10
         self.animation_timer = 0
@@ -119,27 +126,33 @@ class Bikes:
         self.pos_y = pos_y
         self.rect = self.bikes_frames[0].get_rect(center=(self.pos_x, self.pos_y))
         self.mask = pygame.mask.from_surface(self.bikes_frames[0])
+        self.speed = random.randint(3, 13)
 
     def get_frames(self, variant):
-        if variant not in Bikes.frame_cache: #dictionary to store frames and ensure no reloading
+        if variant not in Bikes.frame_cache:  # dictionary to store frames and ensure no reloading
             Bikes.frame_cache[variant] = [
-                self.load_frame(f"pictures/bikes/{variant}{i}.png") for i in (1, 2, 3)
+                self.load_frame(f"media/pictures/bikes/{variant}{i}.png") for i in (1, 2, 3)
             ]
         return Bikes.frame_cache[variant]
 
-    def animate(self, direction_x=-1, direction_y=0):
+    def animate(self, direction_y=0, allow_car=False):
+        direction_x = -self.speed
         self.is_moving = bool(direction_x or direction_y)
         self.pos_x += direction_x
         self.pos_y += direction_y
 
         frame = self.bikes_frames[self.frame_index]
         self.rect.topleft = (self.pos_x, self.pos_y)  # match draw() blit position
-        if self.pos_x < -200: # of screen means reset pos
+        if self.pos_x < -200:
             self.pos_x = SCREEN_WIDTH + random.randint(0, 400)
             self.pos_y = random.randint(100, 400)
-            self.variant = random.choice(self.BIKES)
+            if allow_car and random.random() < self.CAR_PERCENTAGE:
+                self.variant = "d"
+            else:
+                self.variant = random.choice(self.BIKES_ONLY)
             self.bikes_frames = self.get_frames(self.variant)
             self.frame_index = 0
+            self.speed = random.randint(5, 10)
 
     def load_frame(self, path):
         img = pygame.image.load(path).convert_alpha()
@@ -197,9 +210,9 @@ def check_collision(racoon, bike):
 #-----bins----
 class Bins:
     def __init__(self, pos_x=0, pos_y=100):
-        self.default_frame = self.load_frame("pictures/bin/bin.png")
+        self.default_frame = self.load_frame("media/pictures/bin/bin.png")
         self.anim_frames = [
-            self.load_frame(f"pictures/bin/bn{i}.png") for i in range(4)
+            self.load_frame(f"media/pictures/bin/bn{i}.png") for i in range(4)
         ]
 
         self.pos_x = pos_x
@@ -215,7 +228,7 @@ class Bins:
 
     def load_frame(self, path):
         img = pygame.image.load(path).convert_alpha()
-        return pygame.transform.scale(img, (250, 250))
+        return pygame.transform.scale(img, (350, 350))
 
     def check_interaction(self, racoon):
         if not self.collected and self.interaction(racoon.pos_x, racoon.pos_y):
@@ -253,3 +266,34 @@ class Bins:
         draw_pos = pos if pos is not None else (self.pos_x, self.pos_y)
         rect = image.get_rect(center=draw_pos)
         screen.blit(image, rect)
+
+
+# -----apple----
+class Apple:
+    def __init__(self, pos_x=0, pos_y=random.randint(100, 400)):
+        self.frame = self.load_frame("media/pictures/apple.png")
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+        self.collected = False
+
+    def load_frame(self, path):
+        img = pygame.image.load(path).convert_alpha()
+        return pygame.transform.scale(img, (60, 60))
+
+    def check_interaction(self, racoon, tolerance=40):  # like bins, closeness
+        if self.collected:
+            return False
+        if abs(self.pos_x - racoon.pos_x) < tolerance and abs(self.pos_y - racoon.pos_y) < tolerance:
+            self.collected = True
+            return True
+        return False
+
+    def is_off_screen(self, scroll_x, screen_width=SCREEN_WIDTH):  # so it can be cleared once passed
+        return (self.pos_x - scroll_x) < -100
+
+    def draw(self, screen, scroll_x=0):
+        if self.collected:
+            return
+        screen_x = self.pos_x - scroll_x
+        rect = self.frame.get_rect(center=(screen_x, self.pos_y))
+        screen.blit(self.frame, rect)

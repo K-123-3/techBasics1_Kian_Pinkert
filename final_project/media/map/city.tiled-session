@@ -1,6 +1,7 @@
 {
-    "activeFile": "/Users/kmarlo/mappp.tmx",
+    "activeFile": "road.tmx",
     "expandedProjectPaths": [
+        "/Users/kmarlo/Desktop"
     ],
     "file.lastUsedOpenFilter": "Alle Dateien (*)",
     "fileStates": {
@@ -20,6 +21,10 @@
             "scaleInDock": 1,
             "scaleInEditor": 0.21
         },
+        "/Users/kmarlo/Desktop/tileset.tsx": {
+            "scaleInDock": 0.501,
+            "scaleInEditor": 0.28
+        },
         "/Users/kmarlo/Downloads/city.tmx": {
             "scale": 0.2261,
             "selectedLayer": 0,
@@ -29,7 +34,7 @@
             }
         },
         "/Users/kmarlo/bgroad1.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 0.1441
         },
         "/Users/kmarlo/city.tmx": {
             "scale": 0.43,
@@ -48,58 +53,98 @@
             }
         },
         "/Users/kmarlo/pixil-frame-0 13.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 0.1234
         },
         "/tileset.tsx": {
             "scaleInDock": 1
         },
         "city.tmx": {
-            "scale": 0.5224,
+            "scale": 0.52,
             "selectedLayer": -1,
             "viewCenter": {
-                "x": 539.8162327718223,
-                "y": 526.416539050536
+                "x": 540.3846153846155,
+                "y": 526.9230769230768
             }
         },
         "pixil-frame-0 18.tsx": {
             "scaleInDock": 1
         },
         "pixil-frame-0 19.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 0.2292,
+            "scaleInEditor": 0.28
         },
         "pixil-frame-0 20.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 0.1754,
+            "scaleInEditor": 0.28
+        },
+        "pixil-frame-0 22.tsx": {
+            "scaleInDock": 0.191,
+            "scaleInEditor": 0.28
         },
         "road.tmx": {
-            "scale": 0.058950892857142854,
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.0712,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 8356.741573033709,
+                "y": 884.8314606741574
+            }
+        },
+        "road2.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.0968,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 5606.361226808028,
-                "y": 797.2737599394168
+                "x": 11353.305785123968,
+                "y": 423.5537190082641
             }
+        },
+        "tileset2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.28
         }
     },
     "last.externalTilesetPath": "/Users/kmarlo/Desktop",
     "last.imagePath": "/Users/kmarlo/Downloads",
-    "map.height": 40,
+    "map.height": 10,
     "map.lastUsedFormat": "tmx",
-    "map.tileHeight": 32,
-    "map.tileWidth": 32,
-    "map.width": 60,
+    "map.tileHeight": 128,
+    "map.tileWidth": 128,
+    "map.width": 70,
     "openFiles": [
-        "/Users/kmarlo/mappp.tmx"
+        "road.tmx",
+        "/Users/kmarlo/Desktop/tileset.tsx",
+        "city.tmx",
+        "tileset2.tsx",
+        "pixil-frame-0 19.tsx",
+        "pixil-frame-0 20.tsx",
+        "road2.tmx",
+        "pixil-frame-0 22.tsx"
     ],
     "project": "city.tiled-project",
     "recentFiles": [
-        "/Users/kmarlo/Downloads/city.tmx",
+        "pixil-frame-0 22.tsx",
+        "road2.tmx",
+        "pixil-frame-0 20.tsx",
+        "pixil-frame-0 19.tsx",
+        "tileset2.tsx",
         "city.tmx",
+        "/Users/kmarlo/Desktop/tileset.tsx",
+        "road.tmx",
+        "/Users/kmarlo/Downloads/city.tmx",
         "/Users/kmarlo/Desktop/city.tsx",
         "/Users/kmarlo/Desktop/city.tmx",
-        "/Users/kmarlo/mappp.tmx",
-        "/Users/kmarlo/city.tmx",
-        "road.tmx"
+        "/Users/kmarlo/mappp.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFilter": "Tiled-Kachelsatzdateien (*.tsx *.xml)",
-    "tileset.lastUsedFormat": "tsx"
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 128,
+        "width": 128
+    }
 }

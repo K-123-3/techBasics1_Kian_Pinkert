@@ -13,7 +13,7 @@ def start_screen(screen):
     text = text_font.render("Will you catch the train to Hamburg?", False, (200, 200, 200))
     text_rect = text.get_rect(center = (sw // 2, sh // 6))
 
-    startscreen = pygame.image.load("pictures/startscreen.png").convert_alpha()
+    startscreen = pygame.image.load("media/pictures/startscreen.png").convert_alpha()
     startscreen = pygame.transform.scale(startscreen, (sw, sh))
 
     while True:
@@ -33,7 +33,7 @@ def game_over_screen(screen):
     clock = pygame.time.Clock()
     sw, sh = screen.get_size()
 
-    overscreen= pygame.image.load("pictures/game_over.png").convert_alpha()
+    overscreen= pygame.image.load("media/pictures/game_over.png").convert_alpha()
     overscreen = pygame.transform.scale(overscreen, (sw, sh))
 
     while True:
@@ -51,7 +51,7 @@ def game_over_screen(screen):
 def win_screen(screen):
     clock = pygame.time.Clock()
     sw, sh = screen.get_size()
-    winscreen = pygame.image.load("pictures/win_screen.png").convert_alpha()
+    winscreen = pygame.image.load("media/pictures/win_screen.png").convert_alpha()
     winscreen = pygame.transform.scale(winscreen, (sw, sh))
 
     while True:

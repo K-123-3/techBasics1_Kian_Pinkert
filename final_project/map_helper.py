@@ -19,10 +19,9 @@ def render_tmx_layers(tmx_data): #render map
 
     return surface
 
-
-def get_collision_rects(tmx_data): #get walls from object layer
+def get_collision_rects(tmx_data, scale=1):
     return [
-        pygame.Rect(obj.x, obj.y, obj.width, obj.height)
+        pygame.Rect(obj.x * scale, obj.y * scale, obj.width * scale, obj.height * scale)
         for layer in tmx_data.objectgroups
         for obj in layer
     ]
@@ -48,8 +47,7 @@ class ScrollingBackground:
         # how far scroll_x can go
         self.max_scroll = max(0, self.tile_width - self.screen_width)
         self.finished = self.max_scroll == 0
-
-        self.collision_rects = get_collision_rects(tmx_data)
+        self.collision_rects = get_collision_rects(tmx_data, scale)
 
     def update(self, speed=None):
         if speed is not None:
