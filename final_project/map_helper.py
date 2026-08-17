@@ -2,7 +2,6 @@ from char_helper import *
 import pytmx
 from pytmx.util_pygame import load_pygame
 from screens import *
-import math
 
 
 def render_tmx_layers(tmx_data): #render map
@@ -25,7 +24,6 @@ def get_collision_rects(tmx_data, scale=1):
         for layer in tmx_data.objectgroups
         for obj in layer
     ]
-
 
 # ----------scrolling background (roads)----------
 class ScrollingBackground:
@@ -64,7 +62,6 @@ def load_map_background(tmx_path, width=SCREEN_WIDTH, height=SCREEN_HEIGHT):
     bg = ScrollingBackground(tmx_path, width, height)
     crop_width = min(width, bg.tile_width)
     return bg.surface.subsurface(pygame.Rect(0, 0, crop_width, height)).copy()
-
 
 # ---------city
 class CityCamera:  # for city: different "camera", player focused

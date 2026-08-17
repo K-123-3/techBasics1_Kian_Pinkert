@@ -1,6 +1,6 @@
-from screens import *
 # from requirements.txt import *
 from map_helper import *
+from screens import *
 
 pygame.display.init()
 pygame.init()
@@ -8,6 +8,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 pygame.display.set_caption('Racoon game')
+
 
 # constants
 ICON_SIZE = 30
@@ -19,10 +20,10 @@ BIN_POSITIONS = [
         (1000,300),
     ]
 BIKE_POSITIONS = [
-    (800, random.randint(-300, -100)),
-    (900, random.randint(-300, -100)),
-    (600, random.randint(-300, -200)),
-    (1000, random.randint(-300, -150)),
+    (600, random.randint(100, 300)),
+    (900, random.randint(100, 200)),
+    (300, random.randint(200, 300)),
+    (12000, random.randint(50, 150)),
 ]
 
 SCENES = [
@@ -30,8 +31,6 @@ SCENES = [
     {"path": "media/map/road2.tmx", "bg_speed": 2, "racoon_speed": 4, "allow_car": True},
     {"path": "media/map/road2.tmx", "bg_speed": 3, "racoon_speed": 5, "allow_car": True},
 ]
-
-DEBUG_SCENES = 0 #set to scene number to debug - 0 = road, 1 = road2, 2 = road3
 #audio
 hit_sfx = pygame.mixer.Sound('media/music_sfx/hit_sfx.mp3')
 apple_sfx = pygame.mixer.Sound('media/music_sfx/apple_sfx.mp3')
@@ -46,13 +45,26 @@ def load_icon(path, size):
 face_alive = load_icon("media/pictures/racoon/face.png", ICON_SIZE)
 face_dead = load_icon("media/pictures/racoon/score.png", ICON_SIZE)
 
-
 def draw_score(screen, score, max_lives=3):
     for i in range(max_lives):
         x = ICON_MARGIN + i * (ICON_SIZE + ICON_MARGIN)
         y = ICON_MARGIN
         icon = face_alive if i < score else face_dead # show dead face when score goes down
         screen.blit(icon, (x, y))
+
+
+#objectives
+
+objectives_font = pygame.font.SysFont("Arial", 20, bold=True)
+objective1 = objectives_font.render("Get some food" , False, (200, 200, 200))
+obj1_rect = objective1.get_rect(center = (900, 20))
+
+objective2 = objectives_font.render("Get to the train station", False, (200, 200, 200))
+obj2_rect = objective2.get_rect(center = (900, 20))
+ob2 = screen.blit(objective2, obj2_rect)
+
+objective3 = objectives_font.render("Hurry!!", False, (200, 200, 200))
+obj3_rect = objective3.get_rect(center = (900, 20))
 
 #game setup
 def new_game():
@@ -88,7 +100,10 @@ def enter_road(racoon, road_stages, stage_index):
 #running game
 racoon, bikes, city_bg, road_stages, bins = new_game()
 apple = None
-score = 3
+score = 3 #set to 3 if scene is road for debug
+welcome = True
+game_time = None
+DEBUG_SCENES = 2 #set to scene number to debug None = city, 0 = road, 1 = road2, 2 = road3
 
 if DEBUG_SCENES is not None:
     scene = "road"
@@ -105,6 +120,9 @@ while flag:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             flag = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_UP and welcome:
+            welcome = False
+            game_time = pygame.time.get_ticks()
 #control setup
     keys = pygame.key.get_pressed()
     dx = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
@@ -113,8 +131,9 @@ while flag:
 #scene setup
 
     if scene == "city":
-        racoon.wall_collision(dx, dy, city_bg.collision_rects)
-        racoon.update()
+        if not welcome:
+            racoon.animate(dx, dy, city_bg.collision_rects)
+            racoon.update()
         city_bg.draw_camera(screen, racoon)
 
         for bin in bins:
@@ -127,8 +146,10 @@ while flag:
         screen_x, screen_y = city_bg.player_screen_pos(racoon)
         racoon.rect.center = (screen_x, screen_y)
         racoon.draw(screen)
-
         draw_score(screen, score)
+        if welcome:
+            welcome_box(screen)
+        screen.blit(objective1, obj1_rect)
         pygame.display.flip()
 
         if racoon.pos_x >= city_bg.world_width:
@@ -144,17 +165,28 @@ while flag:
         apple = None
         road_index += 1
         if road_index >= len(road_stages):
-            win_screen(screen)
-            road_index = len(road_stages) - 1  # stay clamped if win_screen ever returns
+            elapsed_ms = pygame.time.get_ticks() - game_time if game_time else 0
+            win_screen(screen, score=score, time_taken=elapsed_ms / 1000)
+            road_index = len(road_stages) - 1
         else:
             enter_road(racoon, road_stages, road_index)
         continue
 
-    if (racoon.rect.centerx < 0
-            or racoon.rect.centery < 0
-            or racoon.rect.centery > SCREEN_HEIGHT):
+    if racoon.rect.centerx < 0:
+        score -= 1
+        hit_sfx.play()
+        racoon.pos_x = current_bg.scroll_x + SCREEN_WIDTH // 2
+        racoon.pos_y = SCREEN_HEIGHT // 2
+        racoon.sync_screen_position(current_bg.scroll_x)
+    elif (racoon.rect.centery < 0
+          or racoon.rect.centery > SCREEN_HEIGHT):
         racoon.pos_x, racoon.pos_y = 100, 250
         racoon.sync_screen_position(current_bg.scroll_x)
+
+    current_bg.update()
+    racoon.animate(dx, dy, current_bg.collision_rects, speed=racoon_speed)
+    racoon.update()
+    racoon.sync_screen_position(current_bg.scroll_x)
 
 #object setup
     for bike in bikes:
@@ -181,10 +213,6 @@ while flag:
         game_over_screen(screen)
         continue
 
-    current_bg.update()
-    racoon.wall_collision(dx, dy, current_bg.collision_rects, speed=racoon_speed)
-    racoon.update()
-    racoon.sync_screen_position(current_bg.scroll_x)
 
 #draw
     current_bg.draw(screen)

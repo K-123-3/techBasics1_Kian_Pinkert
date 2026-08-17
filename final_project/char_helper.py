@@ -30,17 +30,7 @@ class Racoon:
         img = pygame.image.load(path).convert_alpha()
         return pygame.transform.scale(img, (350, 350)) #load and scale all images
 
-    def animate(self, direction_x=0, direction_y=0):
-        self.is_moving = bool(direction_x or direction_y)
-        self.pos_x += direction_x * 4
-        self.pos_y += direction_y * 4
-
-        if direction_x > 0:
-            self.facing_left = False
-        elif direction_x < 0:
-            self.facing_left = True
-
-    def wall_collision(self, direction_x, direction_y, collision_rects, speed=3):
+    def animate(self, direction_x, direction_y, collision_rects, speed=3):
         self.is_moving = bool(direction_x or direction_y)
         if direction_x > 0:
             self.facing_left = False
@@ -72,14 +62,24 @@ class Racoon:
                 self.frame_index = (self.frame_index + 1) % len(self.walk_frames) #next animation + loop back to 1 if at 3
             self.rac = self.walk_frames[self.frame_index]
             image = pygame.transform.flip(self.rac, self.facing_left, False)
-            self.mask = pygame.mask.from_surface(image)
         else:
             self.rac = self.idle_frame
             self.frame_index = 0
             self.animation_timer = 0
 
+        image = pygame.transform.flip(self.rac, self.facing_left, False)
+        head_height = int(image.get_height() * 0.3)  #exclude very top of racoon
+        self.mask_offset = (0, head_height)
+        body_area = image.subsurface((
+            0,
+            head_height,
+            image.get_width(),
+            image.get_height() - head_height
+        ))
+        self.mask = pygame.mask.from_surface(body_area)
+
         if self.hit_timer > 0:
-             self.hit_timer -= 1
+            self.hit_timer -= 1
 
     def hit(self):
         self.hit_timer = self.hit_duration
@@ -95,22 +95,14 @@ class Racoon:
             image.blit(red_tint, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
             screen.blit(image, self.rect)
 
-
-    def is_off_screen(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT): #off screen check
-        return (
-                self.rect.centerx < 0 or self.rect.centerx > width
-                or self.rect.centery < 0 or self.rect.centery > height
-        )
-
 #----------bikes--------------
 class Bikes:
     BIKES_CAR = ("a", "b", "c", "d") #account for the 3 types, d is the car
     BIKES_ONLY = ("a", "b", "c")
-    CAR_PERCENTAGE = 0.2 #how likely is a car to spawn
+    CAR_PERCENTAGE = 0.08 #how likely is a car to spawn
     frame_cache = {}
-    spawn_margin = 150
 
-    def __init__(self, pos_x=0, pos_y=200, variant=None, allow_car=False):
+    def __init__(self, pos_x=-100, pos_y=200, variant=None, allow_car=False):
         if variant:
             self.variant = variant
         elif allow_car and random.random() < self.CAR_PERCENTAGE:
@@ -126,7 +118,7 @@ class Bikes:
         self.pos_y = pos_y
         self.rect = self.bikes_frames[0].get_rect(center=(self.pos_x, self.pos_y))
         self.mask = pygame.mask.from_surface(self.bikes_frames[0])
-        self.speed = random.randint(3, 13)
+        self.speed = random.randint(5, 13)
 
     def get_frames(self, variant):
         if variant not in Bikes.frame_cache:  # dictionary to store frames and ensure no reloading
@@ -141,8 +133,7 @@ class Bikes:
         self.pos_x += direction_x
         self.pos_y += direction_y
 
-        frame = self.bikes_frames[self.frame_index]
-        self.rect.topleft = (self.pos_x, self.pos_y)  # match draw() blit position
+        self.rect.center = (self.pos_x, self.pos_y)
         if self.pos_x < -200:
             self.pos_x = SCREEN_WIDTH + random.randint(0, 400)
             self.pos_y = random.randint(100, 400)
@@ -152,7 +143,7 @@ class Bikes:
                 self.variant = random.choice(self.BIKES_ONLY)
             self.bikes_frames = self.get_frames(self.variant)
             self.frame_index = 0
-            self.speed = random.randint(5, 10)
+            self.speed = random.randint(5, 13)
 
     def load_frame(self, path):
         img = pygame.image.load(path).convert_alpha()
@@ -190,22 +181,24 @@ class Bikes:
         self.mask = pygame.mask.from_surface(wheel_area)
 
     def draw(self, screen):
-        screen.blit(self.bikes_frames[self.frame_index], (self.pos_x, self.pos_y))
-
+        rect = self.bikes_frames[self.frame_index].get_rect(center=(self.pos_x, self.pos_y))
+        screen.blit(self.bikes_frames[self.frame_index], rect)
 
 #-----------collisions :( --------------
 def check_collision(racoon, bike):
     bike_mask_x = bike.rect.x + getattr(bike, "mask_offset", (0, 0))[0]
     bike_mask_y = bike.rect.y + getattr(bike, "mask_offset", (0, 0))[1]
 
-    offset = (racoon.rect.x - bike_mask_x, racoon.rect.y - bike_mask_y)
+    racoon_mask_x = racoon.rect.x + getattr(racoon, "mask_offset", (0, 0))[0]
+    racoon_mask_y = racoon.rect.y + getattr(racoon, "mask_offset", (0, 0))[1]
+
+    offset = (racoon_mask_x - bike_mask_x, racoon_mask_y - bike_mask_y)
 
     if bike.mask.overlap(racoon.mask, offset):
-        if racoon.hit_timer == 0: #count hits
+        if racoon.hit_timer == 0:
             racoon.hit()
             return True
     return False
-
 
 #-----bins----
 class Bins:
