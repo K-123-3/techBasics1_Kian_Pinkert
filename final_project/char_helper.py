@@ -1,7 +1,21 @@
 import pygame
 import random
-import time
-SCREEN_WIDTH, SCREEN_HEIGHT = 1000, 500
+from constants import *
+
+
+#--- if loading issues appear:
+def safe_image(path):
+    try:
+        return pygame.image.load(path).convert_alpha()
+    except (pygame.error, FileNotFoundError) as e:
+        raise SystemExit(f"[Asset Error] Could not load image '{path}': {e}")
+
+def safe_sound(path):
+    try:
+        return pygame.mixer.Sound(path)
+    except (pygame.error, FileNotFoundError) as e:
+        raise SystemExit(f"[Asset Error] Could not load sound '{path}': {e}")
+
 
 #----------racooon/player class--------------
 class Racoon:
@@ -24,10 +38,10 @@ class Racoon:
         self.mask = pygame.mask.from_surface(self.walk_frames[0])
 
         self.hit_timer = 0
-        self.hit_duration = 45
+        self.hit_duration = 80
 
     def load_frame(self, path):
-        img = pygame.image.load(path).convert_alpha()
+        img = safe_image(path)
         return pygame.transform.scale(img, (350, 350)) #load and scale all images
 
     def animate(self, direction_x, direction_y, collision_rects, speed=3):
@@ -61,7 +75,6 @@ class Racoon:
                 self.animation_timer = 0 #reset timer
                 self.frame_index = (self.frame_index + 1) % len(self.walk_frames) #next animation + loop back to 1 if at 3
             self.rac = self.walk_frames[self.frame_index]
-            image = pygame.transform.flip(self.rac, self.facing_left, False)
         else:
             self.rac = self.idle_frame
             self.frame_index = 0
@@ -146,7 +159,7 @@ class Bikes:
             self.speed = random.randint(5, 13)
 
     def load_frame(self, path):
-        img = pygame.image.load(path).convert_alpha()
+        img = safe_image(path)
         bounds = img.get_bounding_rect()
         cropped = img.subsurface(bounds).copy()  #remove transparent pxls
 
@@ -168,6 +181,7 @@ class Bikes:
             self.animation_timer = 0
 
         frame = self.bikes_frames[self.frame_index]
+        self.rect = frame.get_rect(center=(self.pos_x, self.pos_y))
         wheel_height = max(10, int(frame.get_height() * 0.2))
         self.mask_offset = (0, frame.get_height() - wheel_height) # offset for wheel
 
@@ -220,7 +234,7 @@ class Bins:
         self.collected = False        #1 use
 
     def load_frame(self, path):
-        img = pygame.image.load(path).convert_alpha()
+        img = safe_image(path)
         return pygame.transform.scale(img, (350, 350))
 
     def check_interaction(self, racoon):
@@ -270,7 +284,7 @@ class Apple:
         self.collected = False
 
     def load_frame(self, path):
-        img = pygame.image.load(path).convert_alpha()
+        img = safe_image(path)
         return pygame.transform.scale(img, (60, 60))
 
     def check_interaction(self, racoon, tolerance=40):  # like bins, closeness

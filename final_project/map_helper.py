@@ -1,8 +1,6 @@
 from char_helper import *
 import pytmx
 from pytmx.util_pygame import load_pygame
-from screens import *
-
 
 def render_tmx_layers(tmx_data): #render map
     width = tmx_data.width * tmx_data.tilewidth
