@@ -1,8 +1,7 @@
 # Racoon Game
 
 ## Overview:
-char_helper for objects and player
-
+char_helper for objects and player 
 map_helper for the maps and cameras
 
 screens for start/game over/win screen
