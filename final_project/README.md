@@ -1,7 +1,9 @@
-# Racoon Game
+# Racoon rum
+You're trying to get to the train station...safely
 
 ## Overview:
 char_helper for objects and player 
+
 map_helper for the maps and cameras
 
 screens for start/game over/win screen
@@ -17,6 +19,23 @@ media:
   music_sfx: sound effects and music
   
   pictures: player/objects
+
+## Controls
+Up, down, left and right arrow keys
+
+## Features
+Playable (cute) character
+
+different types of cameras
+
+increasing speeds in road section
+
+health system
+
+bikes/car with different speeds
+
+timer
+
 
 ## Resources
 
