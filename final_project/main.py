@@ -15,6 +15,10 @@ pygame.display.set_caption('Racoon game')
 hit_sfx = safe_sound('media/music_sfx/hit_sfx.mp3')
 apple_sfx = safe_sound('media/music_sfx/apple_sfx.mp3')
 trash_sfx = safe_sound('media/music_sfx/trash_sfx.mp3')
+music = safe_sound('media/music_sfx/music.mp3')
+music.set_volume(0.2)
+music.play(-1)
+
 #----score
 def load_icon(path, size):
     img = pygame.image.load(path).convert_alpha()
@@ -80,10 +84,10 @@ def enter_road(racoon, road_stages, stage_index):
 def main():
     racoon, bikes, city_bg, road_stages, bins = new_game()
     apple = None
-    score = 0  # set to MAX_LIVES if scene is road for debug
+    score = 2  # set to MAX_LIVES if scene is road for debug
     welcome = True
     game_time = None
-    DEBUG_SCENES = 2  # set to scene number to debug None = city, 0 = road, 1 = road2, 2 = road3
+    DEBUG_SCENES = None  # set to scene number to debug None = city, 0 = road, 1 = road2, 2 = road3
 
     if DEBUG_SCENES is not None:
         scene = "road"
@@ -109,7 +113,6 @@ def main():
         dy = keys[pygame.K_DOWN] - keys[pygame.K_UP]
 
     #scene setup
-
         if scene == "city":
             if not welcome:
                 racoon.animate(dx, dy, city_bg.collision_rects)
@@ -123,13 +126,17 @@ def main():
                     score = min(score + 1, MAX_LIVES)
                 trash_bin.draw(screen, city_bg.to_screen_pos(trash_bin.pos_x, trash_bin.pos_y))
 
+            racoon_hidden = any(trash_bin.is_animating for trash_bin in bins)
             screen_x, screen_y = city_bg.player_screen_pos(racoon)
             racoon.rect.center = (screen_x, screen_y)
-            racoon.draw(screen)
+            if not racoon_hidden:
+                racoon.draw(screen)
+
             draw_score(screen, score)
             if welcome:
                 welcome_box(screen)
-            screen.blit(objective1, obj1_rect)
+            if score < 3:
+                screen.blit(objective1, obj1_rect)
             pygame.display.flip()
 
             if racoon.pos_x >= city_bg.world_width:

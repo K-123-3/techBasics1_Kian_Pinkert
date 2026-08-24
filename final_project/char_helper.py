@@ -19,6 +19,7 @@ def safe_sound(path):
 
 #----------racooon/player class--------------
 class Racoon:
+    """Player character class. Handles movement, animation, drawing and hits."""
     def __init__(self, pos_x=0, pos_y=100):  # default value for start position
         self.idle_frame = self.load_frame("media/pictures/racoon/0.png")
         self.walk_frames = [
@@ -64,7 +65,7 @@ class Racoon:
             self.pos_y -= direction_y * speed
 
     def sync_screen_position(self, scroll_x=0):
-   #so racoon stays still
+    #so racoon stays still in road
         self.rect.center = (self.pos_x - scroll_x, self.pos_y)
 
     def update(self):
@@ -110,6 +111,7 @@ class Racoon:
 
 #----------bikes--------------
 class Bikes:
+    """Bike class. Handles possibility of car, animation, drawing"""
     BIKES_CAR = ("a", "b", "c", "d") #account for the 3 types, d is the car
     BIKES_ONLY = ("a", "b", "c")
     CAR_PERCENTAGE = 0.08 #how likely is a car to spawn
@@ -131,7 +133,7 @@ class Bikes:
         self.pos_y = pos_y
         self.rect = self.bikes_frames[0].get_rect(center=(self.pos_x, self.pos_y))
         self.mask = pygame.mask.from_surface(self.bikes_frames[0])
-        self.speed = random.randint(5, 13)
+        self.speed = random.randint(5, 7)  #purposefully lower so first spawn isnt too fast
 
     def get_frames(self, variant):
         if variant not in Bikes.frame_cache:  # dictionary to store frames and ensure no reloading
@@ -198,7 +200,7 @@ class Bikes:
         rect = self.bikes_frames[self.frame_index].get_rect(center=(self.pos_x, self.pos_y))
         screen.blit(self.bikes_frames[self.frame_index], rect)
 
-#-----------collisions :( --------------
+#-----------collisions --------------
 def check_collision(racoon, bike):
     bike_mask_x = bike.rect.x + getattr(bike, "mask_offset", (0, 0))[0]
     bike_mask_y = bike.rect.y + getattr(bike, "mask_offset", (0, 0))[1]
@@ -208,7 +210,7 @@ def check_collision(racoon, bike):
 
     offset = (racoon_mask_x - bike_mask_x, racoon_mask_y - bike_mask_y)
 
-    if bike.mask.overlap(racoon.mask, offset):
+    if bike.mask.overlap(racoon.mask, offset): #collision with regard of mask offset
         if racoon.hit_timer == 0:
             racoon.hit()
             return True
@@ -216,6 +218,7 @@ def check_collision(racoon, bike):
 
 #-----bins----
 class Bins:
+    """Bin class. Handles animation, drawing and interaction by being touched by racoon"""
     def __init__(self, pos_x=0, pos_y=100):
         self.default_frame = self.load_frame("media/pictures/bin/bin.png")
         self.anim_frames = [
@@ -277,6 +280,7 @@ class Bins:
 
 # -----apple----
 class Apple:
+    """Apple class. Handles animation, drawing and interaction by being touched by racoon"""
     def __init__(self, pos_x=0, pos_y=random.randint(100, 400)):
         self.frame = self.load_frame("media/pictures/apple.png")
         self.pos_x = pos_x
