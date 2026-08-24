@@ -1,6 +1,8 @@
 # Racoon rum
 You're trying to get to the train station...safely
 
+<img width="281" height="185" alt="Bildschirmfoto 2026-08-24 um 18 24 11" src="https://github.com/user-attachments/assets/5f3b21f4-3ba2-4a9a-9749-b0ec9657f2c4" />
+
 ## Overview:
 char_helper for objects and player 
 
