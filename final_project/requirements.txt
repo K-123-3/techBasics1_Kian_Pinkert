@@ -1,2 +1,1 @@
 pytmx>=3.32
-pyscroll>=2.31
