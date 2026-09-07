@@ -63,3 +63,4 @@ Sample of old vs new map
 - Improve music (i have no experience in making music and just wanted to create something small for the background)
 - Third segment of the game (final boss/road that is longer and the most difficult, combining dodging and trash interaction to one map)
 - Ability to decide wether one wants to play the game normally or loop the street segments until one dies
+- redo the map for better structure
