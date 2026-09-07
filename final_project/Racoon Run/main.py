@@ -84,7 +84,7 @@ def enter_road(racoon, road_stages, stage_index):
 def main():
     racoon, bikes, city_bg, road_stages, bins = new_game()
     apple = None
-    score = 2  # set to MAX_LIVES if scene is road for debug
+    score = 0  # set to MAX_LIVES if scene is road for debug
     welcome = True
     game_time = None
     DEBUG_SCENES = None  # set to scene number to debug None = city, 0 = road, 1 = road2, 2 = road3
