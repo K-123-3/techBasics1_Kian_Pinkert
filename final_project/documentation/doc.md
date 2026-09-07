@@ -36,7 +36,7 @@ Sample of old vs new map
 - Started working on city part of the game
 - Issues with tiled maps resolved
 - I accidentally used different pixel size for tileset and map multiple times making the product look strange and unintentional
-  The amount of tilesets is because i was never quite happy with the look of the map whilst playing despite it looking good in tiled so   i mixed and matched different tileset versions of the map until i was happy
+  The amount of tilesets is because i was never quite happy with the look of the map whilst playing despite it looking good in tiled so i mixed and matched different tileset versions of the map until i was happy (thats why the map Folder is sadly very chaotic)
 
 ## 13.08.2026-17.08.2026
 - Worked on small soundtrack
