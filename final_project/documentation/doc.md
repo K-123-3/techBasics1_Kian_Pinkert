@@ -2,11 +2,12 @@
 # Tech basics documentation final project
 
 ## 20.06.2026 - 27.06.2026
-Drew racoon, bikes, temporary background
-Worked on racoon class: movement and animation
-Bike class created
-Struggled with collisions 
+- Drew racoon, bikes, temporary background
+- Worked on racoon class: movement and animation
+- Bike class created
+- Struggled with collisions 
 
+<img width="1450" height="700" alt="racoon" src="https://github.com/user-attachments/assets/79c61a1e-4dec-49fb-aeea-abb0ae429e50" />
  tried to work with spritesheets at first but found cut-up pngs easier
 
 ## 01.07.2026
