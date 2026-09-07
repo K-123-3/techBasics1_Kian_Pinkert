@@ -7,8 +7,9 @@
 - Bike class created
 - Struggled with collisions 
 
-<img width="700" height="350" alt="racoon" src="https://github.com/user-attachments/assets/79c61a1e-4dec-49fb-aeea-abb0ae429e50" />
- tried to work with spritesheets at first but found cut-up pngs easier
+<img width="900" height="350" alt="racoon" src="https://github.com/user-attachments/assets/79c61a1e-4dec-49fb-aeea-abb0ae429e50" />
+
+tried to work with spritesheets at first but found cut-up pngs easier
 
 ## 01.07.2026
 - Finish up little demo for intermediate presentation
