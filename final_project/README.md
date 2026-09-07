@@ -5,23 +5,23 @@ You're trying to get to the train station...safely
 
 
 ## Overview:
-char_helper for objects and player 
+-> char_helper for objects and player 
 
-map_helper for the maps and cameras
+-> map_helper for the maps and cameras
 
-screens for start/game over/win screen
+-> screens for start/game over/win screen
 
-main for the main code
+-> main for the main code
 
-constants for constant values
+-> constants for constant values
 
-media:
+-> media:
 
-  map: Tiled maps and tilesets
+  - map: Tiled maps and tilesets
   
-  music_sfx: sound effects and music
+  - music_sfx: sound effects and music
   
-  pictures: player/objects
+  - pictures: player/objects
 
 ## To tun the game:
 Download the Racoon Run file and open in pycharm
@@ -32,17 +32,13 @@ Pygame 3.13 and Pytmx packages required
 Up, down, left and right arrow keys
 
 ## Features
-Playable (cute) character
-
-different types of cameras
-
-increasing speeds in road section
-
-health system
-
-bikes/car with different speeds
-
-timer
+- Playable (cute) character
+- different types of cameras
+- increasing speeds in road section
+- health system
+- bikes/cars with different speeds
+- timer
+- two scenes (City as movement and score tutorial, road as main game)
 
 
 ## Resources
