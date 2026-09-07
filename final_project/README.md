@@ -23,6 +23,9 @@ media:
   
   pictures: player/objects
 
+## To tun the game:
+Pygame 3.13 and Pytmx packvages required
+
 ## Controls
 Up, down, left and right arrow keys
 
