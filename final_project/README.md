@@ -25,6 +25,7 @@ media:
 
 ## To tun the game:
 Download the Racoon Run file and open in pycharm
+
 Pygame 3.13 and Pytmx packages required
 
 ## Controls
