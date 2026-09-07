@@ -1,2 +1,2 @@
-pygame>=2.5.0
+pygame == 3.13
 pytmx>=3.32
