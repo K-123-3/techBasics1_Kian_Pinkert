@@ -1,5 +1,4 @@
 import pygame
-import sys
 from char_helper import *
 
 def start_screen(screen):
