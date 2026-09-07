@@ -54,6 +54,7 @@ Sample of old vs new map
 
  <img width="1288" height="735" alt="Bildschirmfoto 2026-09-07 um 12 05 00" src="https://github.com/user-attachments/assets/81cb805d-c4b4-4f46-88d0-c1cf9fd483e8" />
 <img width="817" height="442" alt="Bildschirmfoto 2026-09-07 um 12 03 56" src="https://github.com/user-attachments/assets/741291cf-1794-4fc6-aac0-9e3e7da9b957" />
+
 ## 19-24.08.2026
 - Finished audio and added sfx
 - Test and fix small problems (apple/car spawn rate, camera speed)
